@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getCountries } from '../../service/countryApi';
 
-import GridItem from 'GridItem';
+import Grid from '../Grid/Grid';
+import GridItem from '../GridItem/GridItem';
+import { Link } from 'react-router-dom';
 
 const CountryList = () => {
   const [countries, setCountries] = useState([]);
@@ -9,27 +11,26 @@ const CountryList = () => {
   useEffect(() => {
     const asyncWrapper = async () => {
       const countryListData = await getCountries();
-      // console.log(countryListData);
       setCountries(countryListData);
     };
     asyncWrapper();
   }, []);
 
-  console.log(countries);
-
   return (
     <>
-      {countries.map(country => {
-        console.log(country);
-        return (
-          <GridItem key={country}>
-            <Link>
-              <img src="" alt="" />
-            </Link>
-          </GridItem>
-        );
-      })}
+      <Grid>
+        {countries.map(country => {
+          return (
+            <GridItem key={country.id}>
+              <Link to={`${country.country}`}>
+                <img src={country.flag} alt={country.country} />
+              </Link>
+            </GridItem>
+          );
+        })}
+      </Grid>
     </>
   );
 };
+
 export default CountryList;
